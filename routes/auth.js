@@ -7,11 +7,13 @@ const saltRounds = 10;
 const User = require('../models/Users');
 const { default: mongoose } = require('mongoose');
 
-router.get('/signup', (req, res, next) => {
+const {isLoggedIn, isLoggedOut} = require('../middleware/route-guard')
+
+router.get('/signup', isLoggedOut, (req, res, next) => {
     res.render('auth/signup')
 })
 
-router.post('/signup', (req, res, next) => {
+router.post('/signup', isLoggedOut, (req, res, next) => {
     // console.log("The form data: ", req.body);
 
     const { username, email, password } = req.body;
@@ -66,12 +68,12 @@ router.post('/signup', (req, res, next) => {
 });
 
 
-router.get('/login', (req, res, next) => {
+router.get('/login', isLoggedOut,(req, res, next) => {
     res.render('auth/login')
 });
 
 
-router.post('/login', (req, res, next) => {
+router.post('/login', isLoggedOut, (req, res, next) => {
 
     console.log('SESSION =====> ', req.session);
     const { email, password } = req.body;
